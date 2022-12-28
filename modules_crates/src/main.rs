@@ -1,10 +1,12 @@
-mod front_of_house;
+extern crate modules_crates;
 
-pub use crate::front_of_house::hosting;
+use modules_crates::english;
+use modules_crates::japanese;
 
-pub fn eat_at_restaurant() {
-    hosting::add_to_waitlist();
-}
 fn main() {
-    eat_at_restaurant()
+    println!("Hello in English: {}", english::greetings::hello());
+    println!("Goodbye in English: {}", english::farewells::goodbye());
+
+    println!("Hello in Japanese: {}", japanese::greetings::hello());
+    println!("Goodbye in Japanese: {}", japanese::farewells::goodbye());
 }
