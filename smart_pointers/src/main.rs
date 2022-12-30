@@ -1,6 +1,4 @@
 use std::ops::Deref;
-
-
 struct MyBox<T>(T);
 
 impl<T> MyBox<T>{
@@ -9,6 +7,12 @@ impl<T> MyBox<T>{
     }
 }
 
+enum List{
+    Cons(i32, Box<List>),
+    Nil
+}
+
+use List::{Cons,Nil};
 impl<T> Deref for MyBox<T>{
     type Target = T;
     
@@ -28,4 +32,9 @@ fn main() {
    let c = String::from("testing");
    drop(c); //callin the drop method on c
 
+}
+
+fn box_pointer(){
+   let mut list = Cons(1,Box::new(Cons(2,Box::new(Cons(3, Box::new(Nil))))));
+   let head = 
 }
