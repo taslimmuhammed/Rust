@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 fn main() {
     let mut stri= String::from("hello");
     printstr(stri);
@@ -12,8 +14,29 @@ fn main() {
     // s.clear(); // this empties the String, making it equal to ""}
     //cpy_parts(&s);
     let word = first_word(&s[0..5]);
+
+    hash_maps()
 }
 
+
+fn hash_maps(){
+    let text = "hello world wornderful world";
+    let mut map  = HashMap::new();
+    
+    for word in text.split_whitespace(){
+        let count = map.entry(word).or_insert(0);
+        *count +=1;
+    }
+
+    println!("{:?}",map)
+}
+fn making_of_string(){
+    let s1 = String::from("Hello");
+    let s2 = "world";
+    let s3  = s2.to_string();
+    let s4 = format!("{} {}",s1, s3);
+
+}
 fn cpy_parts(s:&String){
     let hello = &s[0..5];
     let world = &s[6..];

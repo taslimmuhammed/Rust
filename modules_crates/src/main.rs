@@ -1,7 +1,7 @@
-extern crate modules_crates;
+extern crate modules_crates as phrases;
 
-use modules_crates::english;
-use modules_crates::japanese;
+use phrases::english;
+use phrases::japanese;
 
 fn main() {
     println!("Hello in English: {}", english::greetings::hello());

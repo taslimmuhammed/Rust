@@ -31,7 +31,8 @@ fn main() {
    let c = String::from("testing");
    drop(c); //calling the drop method on c
   // reference_counter()
-   refcell()
+  // refcell()
+  reference_cycle()
 }
 
 
@@ -69,7 +70,7 @@ fn refcell(){
     let value = Rc::new(RefCell::new(5));
 
     let a = Rc::new(Cons(Rc::clone(&value), Rc::new(Nil)));
-
+    //clone has to be used to give the exact value of a without transferring ownership
     let b = Cons(Rc::new(RefCell::new(3)),Rc::clone(&a));
     let c =Cons(Rc::new(RefCell::new(4)), Rc::clone(&a));
     
@@ -77,9 +78,9 @@ fn refcell(){
     *value.borrow_mut() +=10;
     // match b{
     //     Cons(data, next_address) => {
-    //         match next_address::List {
-    //             Cons(data2, _) =>{},
-    //             Nil => {},
+    //         match next_address {
+    //             Cons(_, _) => todo!(),
+    //             Nil => todo!(),
     //         }
     //     },
     //     Nil => todo!(),
@@ -89,4 +90,53 @@ fn refcell(){
     println!("a after ={:?}",c);
 
 }  
+
+fn reference_cycle(){
+    #[derive(Debug)]
+    enum List {
+        Cons(i32, RefCell<Rc<List>>),
+        Nil,
+    }
+    use List::{Cons,Nil};
+     impl List{
+        fn tail(&self)->Option<&RefCell<Rc<List>>>{
+            match self {
+                List::Cons(_, item) => Some(item),
+                List::Nil => None,
+            }
+        }
+     }
+
+     let a = Rc::new(Cons(5, RefCell::new(Rc::new(Nil))));
+
+    println!("a initial rc count = {}", Rc::strong_count(&a));
+    println!("a next item = {:?}", a.tail());
+
+    let b = Rc::new(Cons(10, RefCell::new(Rc::clone(&a))));
+
+    println!("a rc count after b creation = {}", Rc::strong_count(&a));
+    println!("b initial rc count = {}", Rc::strong_count(&b));
+    println!("b next item = {:?}", b.tail());
+
+    if let Some(link) = a.tail() {
+        *link.borrow_mut() = Rc::clone(&b);
+    }
+
+    println!("b rc count after changing a = {}", Rc::strong_count(&b));
+    println!("a rc count after changing a = {}", Rc::strong_count(&a));
+    
+    print_loop(&a);
+    fn print_loop(x: &List){
+        match x {
+            List::Cons(data, ref item) => {
+              println!("{data}");
+              print_loop(item);
+            },
+            List::Nil => {
+                println!("End of the line")
+            },
+        };
+    }
+
+}
 

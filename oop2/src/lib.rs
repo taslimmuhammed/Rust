@@ -1,4 +1,5 @@
 pub struct Post {
+    //post contains any class/state among published/pending_review/Draft which impliments State trait
     state: Option<Box<dyn State>>,
     content: String,
 }
@@ -33,6 +34,7 @@ impl Post {
 trait State {
     fn request_review(self: Box<Self>) -> Box<dyn State>;
     fn approve(self: Box<Self>) -> Box<dyn State>;
+    
     fn content<'a>(&self, post: &'a Post) -> &'a str {
         ""
     }

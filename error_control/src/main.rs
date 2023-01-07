@@ -22,7 +22,7 @@ fn main() {
 }
 
 //same code as above usig unwrapping
-fn unwrpping(){
+fn unwrapping(){
     let f = File::open("hello.txt").unwrap_or_else(|error|{
         if error.kind()==ErrorKind::NotFound{
             File::create("hello.txt").unwrap_or_else(|e|{
@@ -38,7 +38,7 @@ fn unwrpping(){
 
 
 fn useExcept(){
-    let ip :IpAddr = "128.0.0".parse().expect("Error parsing the value");//panic text when error happen
+    let ip :IpAddr = "128.0.0".parse().expect("Error parsing the value");//panic text displayed when Err is the case
 }
 
 fn using_questionmark()-> Result<String,io::Error>{
