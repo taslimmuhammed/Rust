@@ -17,10 +17,16 @@ impl<T> MyBox<T>{
 // Arc<T> - same as RC but used for multi-threaded operations
 // Cell provide intirior mutableity for types that impliment 'Copy' trait
 // Cell methods ::new(val), .set(new_val), .get()
-
 // For others [like strings] we use RefCell
-// 
-// RefCell - used for creating mutable 
+// there are two types of borrow in refcell
+// let mut mutable_var = recell.borrow_mut() - this is mutable
+// let var = recell.borrow()
+// Rwcell -  for multi threaded works
+// has RwLock which impliments mutex, so close the scope asap {}
+// let mut num = data3.write().unwrap();
+// let num = data3.read().unwrap();
+// there is also another smart pointer named mutex
+
 
 
 // For having multiple ownership
