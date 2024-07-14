@@ -6,7 +6,24 @@ impl<T> MyBox<T>{
         MyBox(x)
     }
 }
+// Notes
+// Boxes [Allocates data to heap] - for 2 thigs only
+// 1) For variable with a trait type that cant be computed at compile time
+// 2) For recursive data types - eg. a struct refernce to itself
+// RcCell - RC->Refernce Count
+// for multiple refernces
+// use Rc::new for creating new , and Rc::clone(&ptr) for creating a new reference for existing item
+// Rc::strong_count(&a) for getting count of refernces
+// Arc<T> - same as RC but used for multi-threaded operations
+// Cell provide intirior mutableity for types that impliment 'Copy' trait
+// Cell methods ::new(val), .set(new_val), .get()
 
+// For others [like strings] we use RefCell
+// 
+// RefCell - used for creating mutable 
+
+
+// For having multiple ownership
 // enum List{
 //     Cons(i32, Box<List>),
 //     Nil
@@ -129,8 +146,8 @@ fn reference_cycle(){
     fn print_loop(x: &List){
         match x {
             List::Cons(data, ref item) => {
-              println!("{data}");
-              print_loop(item);
+              println!("data is {data}");
+            //   print_loop(item.deref());
             },
             List::Nil => {
                 println!("End of the line")
